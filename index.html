@@ -1,0 +1,154 @@
+<html>
+<head>
+<title>-:[ Tested By zerostr ]:-</title>
+<link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQgkc0EsADmOMcCl6pA0lR_Fi6-AnJQYllvn5PnR3CGS-bK4vLb&usqp=CAU">
+<meta name="description" content="Tested By Gen_X">
+<link href="https://fonts.googleapis.com/css?family=Concert+One&display=swap" rel="stylesheet">
+
+<script>
+"use strict";
+
+//constants
+
+const g = 0.2;
+
+//variables
+
+let c, ctx, W, H;
+
+let raindrops = [];
+
+
+
+class RainParticle {
+
+    constructor () {
+
+        this.x = Math.random() * W;
+
+        this.y = 0;
+
+        this.vy = 2;
+
+    }
+
+    
+
+    update () {
+
+        this.vy += g;
+
+        this.y += this.vy;
+
+    };
+
+    
+
+    draw () {
+
+        ctx.fillStyle = "rgb(255, 255, 255)";
+
+        ctx.fillRect(this.x, this.y, 1, 10);
+
+    };
+
+}
+
+
+
+//functions
+
+window.onload = () => {
+
+    //canvas setup
+
+    c = document.getElementById("Canvas");
+
+    ctx = c.getContext("2d");
+
+    //canvas --> full screen
+
+    c.width = W = window.innerWidth;
+
+    c.height = H = window.innerHeight;
+
+    
+
+    //begin animation
+
+    window.requestAnimationFrame(animate);
+
+};
+
+
+
+const animate = (timestamp) => {
+
+    //clear canvas & lower alpha before updating animation
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+
+    ctx.fillRect(0, 0, W, H);
+
+    //create a new rain particle per frame
+
+    raindrops.push(new RainParticle());
+
+    
+
+    for (let i=raindrops.length-1; i>0; i--) {
+
+        raindrops[i].update();
+
+        raindrops[i].draw();
+
+        //remove particles for performance
+
+        if (raindrops[i].y >= c.height)
+
+            raindrops.splice(i, 1);
+
+    }
+
+    
+
+    //call next animation recursively
+
+    window.requestAnimationFrame(animate);   
+
+};
+</script>
+<style>
+	body{
+            background: #0A0A0A;
+        }
+        .text-area {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            margin: 0;
+            font-family: 'Concert One', cursive;
+            font-weight: 900;
+            font-size: 5em;
+            animation-name: animate;
+            animation-duration: 7s;
+            animation-direction: alternate;
+            animation-iteration-count: infinite;            
+            padding:40px;
+            line-height:1.5;
+            text-transform:capitalize;
+         }
+        @keyframes animate {
+            0%,100%{ text-shadow:0 0 30px red; }
+            25%{ text-shadow:0 0 30px #ff9100; }
+            50%{ text-shadow:0 0 30px #0aff12; }
+            75%{ text-shadow:0 0 30px cyan; }
+            90%{ text-shadow:0 0 30px white; }
+         }
+</style></head><body>
+	<canvas id="Canvas"></canvas>
+
+	<h1 class="text-area">Touched By<br><center>zerostr</h1>
+	</body>
+	</html>
